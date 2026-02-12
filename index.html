@@ -3,136 +3,823 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Emploi du temps - ENO Sébikotane</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link rel="icon" type="image/x-icon" href="https://cdn-icons-png.flaticon.com/512/3050/3050525.png">
+  <title>Planning Groupes 17-28 · ENO Sébikotane</title>
+  <!-- Google Fonts & Font Awesome -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ========== VARIABLES & RESET ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-dark: #0b2b40;
+      --primary: #1e4a6b;
+      --primary-light: #2c6c8f;
+      --secondary: #f4b942;
+      --accent: #e68a2e;
+      --success: #2a7a62;
+      --warning: #c2491f;
+      --light-bg: #f6f9fc;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --text-light: #64748b;
+      --border-light: #e2e8f0;
+      --shadow-sm: 0 10px 25px -5px rgba(0,0,0,0.03), 0 8px 10px -6px rgba(0,0,0,0.02);
+      --shadow-md: 0 20px 30px -10px rgba(0,20,30,0.15);
+      --radius-lg: 24px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(145deg, #f1f7fa 0%, #e9eff3 100%);
+      color: var(--text-dark);
+      line-height: 1.5;
+      padding: 30px 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* ========== HEADER DE LUXE ========== */
+    .hero {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--primary-light) 100%);
+      padding: 40px 40px 35px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 35px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "📅";
+      position: absolute;
+      bottom: -20px;
+      right: 20px;
+      font-size: 130px;
+      opacity: 0.08;
+      color: white;
+      transform: rotate(5deg);
+    }
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
+
+    .icon-university {
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      width: 90px;
+      height: 90px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .icon-university i {
+      font-size: 44px;
+      color: white;
+    }
+
+    .hero-text h1 {
+      font-size: 38px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: white;
+      margin-bottom: 8px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .hero-text p {
+      font-size: 17px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.9);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .hero-badge {
+      background: rgba(255,255,255,0.2);
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 15px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* ========== STATS CARDS ========== */
+    .stats-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 25px;
+      justify-content: space-between;
+    }
+
+    .stat-item {
+      background: white;
+      border-radius: 20px;
+      padding: 18px 25px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex: 1 1 180px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(255,255,255,0.7);
+      backdrop-filter: blur(4px);
+      transition: all 0.2s ease;
+    }
+
+    .stat-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
+    }
+
+    .stat-icon {
+      background: linear-gradient(145deg, var(--primary-light), var(--primary));
+      width: 55px;
+      height: 55px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 26px;
+    }
+
+    .stat-content h4 {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      line-height: 1.2;
+    }
+
+    .stat-content span {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-light);
+      letter-spacing: 0.3px;
+    }
+
+    /* ========== BANNIÈRES D'INFORMATION ========== */
+    .info-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 35px 0 25px;
+    }
+
+    .alert-card {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 22px 25px;
+      box-shadow: var(--shadow-sm);
+      border-left: 8px solid;
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+    }
+
+    .alert-card.weekend {
+      border-left-color: #d14b4b;
+    }
+    .alert-card.ramadan {
+      border-left-color: #e68a2e;
+    }
+
+    .alert-icon {
+      font-size: 32px;
+    }
+    .alert-card.weekend .alert-icon { color: #d14b4b; }
+    .alert-card.ramadan .alert-icon { color: #e68a2e; }
+
+    .alert-content h5 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text-dark);
+    }
+
+    .alert-content p {
+      color: var(--text-light);
+      font-size: 15px;
+    }
+
+    /* ========== GRILLE DES GROUPES ========== */
+    .group-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 28px;
+      margin-top: 20px;
+    }
+
+    .group-card {
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 15px 30px -12px rgba(0,0,0,0.1);
+      transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(2px);
+    }
+
+    .group-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 25px 45px -12px rgba(21, 66, 105, 0.25);
+    }
+
+    /* header de carte avec dégradé */
+    .group-header {
+      background: linear-gradient(115deg, #1e4a6b 0%, #256f8c 100%);
+      padding: 22px 25px;
+      border-radius: 24px 24px 0 0;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .group-header::after {
+      content: "● ● ●";
+      position: absolute;
+      bottom: 10px;
+      right: 25px;
+      font-size: 12px;
+      letter-spacing: 4px;
+      opacity: 0.5;
+      color: rgba(255,255,255,0.5);
+    }
+
+    .group-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .group-name {
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .group-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .group-meta span {
+      background: rgba(255,255,255,0.18);
+      padding: 5px 12px;
+      border-radius: 30px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(2px);
+    }
+
+    .group-status {
+      background: rgba(255,255,255,0.25);
+      padding: 8px 18px;
+      border-radius: 40px;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .status-en-cours { background: #f59e0b; color: white; border: none; }
+    .status-a-venir { background: #10b981; color: white; border: none; }
+
+    /* tableau des sessions */
+    .session-table {
+      width: 100%;
+      border-collapse: collapse;
+      padding: 8px 0;
+    }
+
+    .session-table td {
+      padding: 16px 18px;
+      border-bottom: 1px solid #edf2f7;
+      vertical-align: top;
+    }
+
+    .session-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .session-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 14px;
+      color: white;
+      box-shadow: 0 6px 12px -6px rgba(0,0,0,0.2);
+    }
+
+    .badge-s1 { background: #3b82f6; }
+    .badge-s2 { background: #8b5cf6; }
+    .badge-s3 { background: #10b981; }
+    .badge-s4 { background: #f59e0b; }
+    .badge-s5 { background: #ef4444; }
+
+    .session-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .session-date {
+      font-weight: 700;
+      color: #0b2b40;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .session-date i {
+      color: #1e4a6b;
+      font-size: 14px;
+    }
+
+    .session-time {
+      font-size: 14px;
+      color: #2c6c8f;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .session-room {
+      background: #f1f9fc;
+      color: #0b2b40;
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      width: fit-content;
+      border: 1px solid #b8dae6;
+    }
+
+    .session-note {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 50px;
+      margin-top: 6px;
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffe28c;
+    }
+
+    .session-note.corrected {
+      background: #d4edda;
+      color: #155724;
+      border-color: #a3d0b2;
+    }
+
+    .session-note.ramadan {
+      background: #fff1e6;
+      color: #b3410b;
+      border-color: #ffb68b;
+    }
+
+    /* ========== FOOTER ÉLÉGANT ========== */
+    .elegant-footer {
+      background: white;
+      margin-top: 50px;
+      padding: 35px 35px 30px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid rgba(0,0,0,0.03);
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .footer-icon {
+      background: linear-gradient(145deg, #1e4a6b, #0b2b40);
+      width: 60px;
+      height: 60px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+    }
+
+    .footer-text h6 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-bottom: 4px;
+    }
+
+    .footer-text p {
+      color: var(--text-light);
+      font-size: 14px;
+    }
+
+    .contact-flex {
+      display: flex;
+      gap: 25px;
+      color: var(--text-light);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+    }
+
+    .contact-item i {
+      color: var(--primary);
+      width: 20px;
+    }
+
+    /* ========== BOUTON IMPRESSION FLOTTANT ========== */
+    .print-btn {
+      position: fixed;
+      bottom: 35px;
+      right: 35px;
+      background: linear-gradient(145deg, #1e4a6b, #12344d);
+      color: white;
+      border: none;
+      padding: 16px 30px;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 15px 30px -8px rgba(20,70,100,0.5);
+      cursor: pointer;
+      transition: 0.2s;
+      border: 1px solid rgba(255,255,255,0.3);
+      z-index: 999;
+    }
+
+    .print-btn:hover {
+      background: #0b2b40;
+      transform: scale(1.05);
+      box-shadow: 0 20px 40px -8px #0b2b40;
+    }
+
+    /* ========== STYLES D'IMPRESSION ========== */
+    @media print {
+      body {
+        background: white;
+        padding: 0.5cm;
+      }
+      .hero, .stats-grid, .print-btn, .elegant-footer, .alert-icon, .group-header::after {
+        background: none;
+        color: black;
+        box-shadow: none;
+      }
+      .hero {
+        border: 1px solid #ccc;
+        padding: 20px;
+        background: #f3f3f3;
+      }
+      .hero-text h1 { color: black; }
+      .hero-badge { border: 1px solid black; color: black; background: none; }
+      .stat-item { border: 1px solid #aaa; box-shadow: none; background: white; }
+      .group-card { break-inside: avoid; border: 1px solid #222; box-shadow: none; }
+      .group-header { background: #ddd; color: black; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .session-badge { border: 1px solid black; color: black; background: white !important; }
+      .badge-s1, .badge-s2, .badge-s3, .badge-s4, .badge-s5 { background: white !important; color: black; border: 1px solid black; }
+      .session-room { border: 1px solid black; background: white; }
+      .info-panel { display: none; }
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 800px) {
+      .hero-content { flex-direction: column; text-align: center; }
+      .info-panel { grid-template-columns: 1fr; }
+      .stats-grid { flex-direction: column; }
+      .elegant-footer { flex-direction: column; gap: 20px; text-align: center; }
+      .contact-flex { flex-wrap: wrap; justify-content: center; }
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <!-- BOUTON IMPRESSION FLOTTANT -->
+    <button class="print-btn" onclick="window.print();">
+      <i class="fas fa-print"></i> Imprimer le planning
+    </button>
 
-<div class="header">
-  <div class="logo-container">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Logo_UNCHK.svg/800px-Logo_UNCHK.svg.png" 
-         alt="Logo UNCHK" class="logo">
-    <div>
-      <h1><i class="fas fa-graduation-cap"></i> ENO DE SÉBIKOTANE</h1>
-      <h3>Université Numérique Cheikh Hamidou Kane</h3>
+    <!-- HERO EN-TÊTE PREMIUM -->
+    <div class="hero">
+      <div class="hero-content">
+        <div class="icon-university">
+          <i class="fas fa-university"></i>
+        </div>
+        <div class="hero-text">
+          <h1>GROUPES 17–28 · RAMADAN 2026</h1>
+          <p>
+            <span class="hero-badge"><i class="fas fa-check-circle"></i> 12 groupes actifs</span>
+            <span class="hero-badge"><i class="fas fa-users"></i> 650 étudiants</span>
+            <span class="hero-badge"><i class="fas fa-door-open"></i> Salles Mbambey & Salle 2</span>
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
-  <div>
-    <span class="badge">27 Groupes</span>
-    <span class="badge">1350 Étudiants</span>
-    <span class="badge">20h de Formation</span>
-    <span class="badge ent-badge">ENT</span>
-  </div>
-</div>
 
-<div class="ent-explanation">
-  <h4><i class="fas fa-laptop-house"></i> Environnement Numérique de Travail (ENT)</h4>
-  <p><strong>Objectif :</strong> Maîtriser nos plateformes de formation en ligne, outils collaboratifs et ressources numériques académiques.</p>
-  <p><strong>Contenu :</strong> Accès aux cours en ligne, dépôt de travaux, messagerie universitaire, bibliothèque numérique et outils de collaboration.</p>
-</div>
+    <!-- STATISTIQUES LUXE -->
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-layer-group"></i></div>
+        <div class="stat-content">
+          <h4>17–28</h4>
+          <span>Groupes planifiés</span>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        <div class="stat-content">
+          <h4>8h30–12h30</h4>
+          <span>Matin (Ramadan)</span>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-calendar-times"></i></div>
+        <div class="stat-content">
+          <h4>Week-end</h4>
+          <span>Aucun cours</span>
+        </div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon"><i class="fas fa-check-double"></i></div>
+        <div class="stat-content">
+          <h4>0 Absence</h4>
+          <span>Tolérée</span>
+        </div>
+      </div>
+    </div>
 
-<h2 class="section-title"><i class="fas fa-list-ol"></i> Programme des 5 Séances</h2>
+    <!-- BANNIÈRES D’ALERTE -->
+    <div class="info-panel">
+      <div class="alert-card weekend">
+        <div class="alert-icon"><i class="fas fa-ban"></i></div>
+        <div class="alert-content">
+          <h5>❌ Aucun cours le week‑end</h5>
+          
+        </div>
+      </div>
+      <div class="alert-card ramadan">
+        <div class="alert-icon"><i class="fas fa-moon"></i></div>
+        <div class="alert-content">
+          <h5>🌙 Ramadan – horaires adaptés</h5>
+          <p>À partir du 18 février : tous les cours en matinée (8h30–12h30).</p>
+        </div>
+      </div>
+    </div>
 
-<div class="sessions-overview">
-  <div class="session-card">
-    <span class="session-number">S1</span>
-    <strong>Concepts de base de l'informatique</strong>
-    <p class="session-desc">Hardware, software, réseaux</p>
-  </div>
-  <div class="session-card">
-    <span class="session-number">S2</span>
-    <strong>Présentation générale des SE</strong>
-    <p class="session-desc">Systèmes d'exploitation</p>
-  </div>
-  <div class="session-card">
-    <span class="session-number">S3</span>
-    <strong>Prise en main de Windows</strong>
-    <p class="session-desc">Interface, fichiers, gestion</p>
-  </div>
-  <div class="session-card">
-    <span class="session-number">S4</span>
-    <strong>Suite bureautique</strong>
-    <p class="session-desc">Word, Excel, PowerPoint</p>
-  </div>
-  <div class="session-card">
-    <span class="session-number">S5</span>
-    <strong>ENT & outils numériques</strong>
-    <p class="session-desc">Plateforme, collaboration</p>
-  </div>
-</div>
+    <!-- GRILLE DES GROUPES 17 à 28 -->
+    <div class="group-grid">
+      
+      <!-- GROUPE 17 -->
+      <div class="group-card">
+        <div class="group-header">
+          <div class="group-title">
+            <span class="group-name">Groupe 17</span>
+            <div class="group-meta">
+              <span><i class="fas fa-user-graduate"></i> 50</span>
+              <span><i class="fas fa-door-closed"></i> Mbambey</span>
+            </div>
+          </div>
+          <div class="group-status status-en-cours">En cours</div>
+        </div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 09/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 11/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 13/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 17/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Jeudi 19/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
 
-<div class="info-cards">
-  <div class="card">
-    <h4><i class="fas fa-calendar-alt"></i> Calendrier académique</h4>
-    <p><strong>Démarrage :</strong> 05 Janvier 2026</p>
-    <p><strong>Finalisation :</strong> 27 Février 2026</p>
-    <p><strong>Horaires :</strong> 8h30-12h30 • 14h00-18h00</p>
-    <p><strong>Durée :</strong> 20h par groupe (5 séances)</p>
-  </div>
-  
-  <div class="card">
-    <h4><i class="fas fa-laptop-code"></i> Infrastructure</h4>
-    <p><span class="room room-mbambey">Salle Informatique Mbambey</span></p>
-    <p><span class="room room-salle2">Salle Informatique 2</span></p>
-    <p><strong>Capacité :</strong> 50 postes par salle</p>
-    <p><strong>Équipement :</strong> PC récents + accès internet</p>
-  </div>
-  
-  <div class="card">
-    <h4><i class="fas fa-book-open"></i> Objectifs pédagogiques</h4>
-    <div class="module-themes">
-      <p>• Acquérir les bases théoriques informatiques</p>
-      <p>• Maîtriser l'environnement Windows</p>
-      <p>• Utiliser efficacement la suite Office</p>
-      <p>• Naviguer sur la plateforme ENT</p>
-      <p>• Développer l'autonomie numérique</p>
-    </div>
-  </div>
-</div>
+      <!-- GROUPE 18 -->
+      <div class="group-card">
+        <div class="group-header">
+          <div class="group-title">
+            <span class="group-name">Groupe 18</span>
+            <div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Salle 2</span></div>
+          </div>
+          <div class="group-status status-en-cours">En cours</div>
+        </div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 09/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 11/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 13/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 17/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Jeudi 19/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
 
-<!-- La suite du HTML reste identique à la version précédente -->
-<!-- Pour gagner de l'espace, je vais mettre le reste dans un fichier séparé -->
-<!-- Le code complet est disponible en téléchargement -->
+      <!-- GROUPE 19 -->
+      <div class="group-card">
+        <div class="group-header">
+          <div class="group-title"><span class="group-name">Groupe 19</span><div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Mbambey</span></div></div>
+          <div class="group-status status-en-cours">En cours</div>
+        </div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 09/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00 – 18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 11/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00 – 18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 13/02</span><span class="session-time"><i class="far fa-clock"></i> 15h00 – 19h00</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 16/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00 – 18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note corrected">✓</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 18/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30 – 12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note corrected">✓</span></div></td></tr>
+        </table>
+      </div>
 
-<div class="footer">
-  <div class="logo-container" style="margin-bottom: 15px;">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Logo_UNCHK.svg/800px-Logo_UNCHK.svg.png" 
-         alt="Logo UNCHK" class="logo" style="height: 50px;">
-    <div>
-      <h3 style="color: var(--primary); margin-top: 0; margin-bottom: 5px;">ENO DE SÉBIKOTANE</h3>
-      <p style="margin: 0;"><strong>Université Numérique Cheikh Hamidou Kane</strong></p>
-      <p style="margin: 5px 0; font-size: 14px;">Année Académique 2025-2026 | Service de la Scolarité</p>
+      <!-- GROUPE 20 -->
+      <div class="group-card">
+        <div class="group-header"><div class="group-title"><span class="group-name">Groupe 20</span><div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Salle 2</span></div></div><div class="group-status status-en-cours">En cours</div></div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 09/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 11/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 13/02</span><span class="session-time"><i class="far fa-clock"></i> 15h00–19h00</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 16/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note corrected">✓</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 18/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note corrected">✓</span></div></td></tr>
+        </table>
+      </div>
+
+      <!-- GROUPE 21 -->
+      <div class="group-card">
+        <div class="group-header"><div class="group-title"><span class="group-name">Groupe 21</span><div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Mbambey</span></div></div><div class="group-status status-en-cours">En cours</div></div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 10/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Jeudi 12/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note corrected">✓</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 17/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 18/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 20/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
+
+      <!-- GROUPE 22 -->
+      <div class="group-card">
+        <div class="group-header"><div class="group-title"><span class="group-name">Groupe 22</span><div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Salle 2</span></div></div><div class="group-status status-en-cours">En cours</div></div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 10/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Jeudi 12/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note corrected">✓</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 17/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 18/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 20/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
+
+      <!-- GROUPE 23 -->
+      <div class="group-card">
+        <div class="group-header"><div class="group-title"><span class="group-name">Groupe 23</span><div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Mbambey</span></div></div><div class="group-status status-en-cours">En cours</div></div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 10/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Jeudi 12/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note corrected">✓</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 16/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 18/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 20/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
+
+      <!-- GROUPE 24 -->
+      <div class="group-card">
+        <div class="group-header"><div class="group-title"><span class="group-name">Groupe 24</span><div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Salle 2</span></div></div><div class="group-status status-en-cours">En cours</div></div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 10/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Jeudi 12/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note corrected">✓</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 16/02</span><span class="session-time"><i class="far fa-clock"></i> 14h00–18h00</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 18/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 20/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
+
+      <!-- GROUPE 25 -->
+      <div class="group-card">
+        <div class="group-header"><div class="group-title"><span class="group-name">Groupe 25</span><div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Mbambey</span></div></div><div class="group-status status-a-venir">À venir</div></div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 23/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 25/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 27/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 02/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 04/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
+
+      <!-- GROUPE 26 -->
+      <div class="group-card">
+        <div class="group-header"><div class="group-title"><span class="group-name">Groupe 26</span><div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Salle 2</span></div></div><div class="group-status status-a-venir">À venir</div></div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 23/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 25/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 27/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 02/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 04/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
+
+      <!-- GROUPE 27 -->
+      <div class="group-card">
+        <div class="group-header"><div class="group-title"><span class="group-name">Groupe 27</span><div class="group-meta"><span><i class="fas fa-user-graduate"></i> 50</span><span><i class="fas fa-door-closed"></i> Mbambey</span></div></div><div class="group-status status-a-venir">À venir</div></div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 24/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Jeudi 26/02</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 01/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note corrected">✓</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mardi 03/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Jeudi 05/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Mbambey</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
+
+      <!-- GROUPE 28 – NOUVEAU -->
+      <div class="group-card">
+        <div class="group-header" style="background: linear-gradient(115deg, #1b4f3d, #2a6e4b);">
+          <div class="group-title">
+            <span class="group-name">Groupe 28</span>
+            <div class="group-meta">
+              <span><i class="fas fa-user-graduate"></i> 50</span>
+              <span><i class="fas fa-door-closed"></i> Salle 2</span>
+            </div>
+          </div>
+          <div class="group-status status-a-venir">À venir</div>
+        </div>
+        <table class="session-table">
+          <tr><td><span class="session-badge badge-s1">S1</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 06/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s2">S2</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 09/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s3">S3</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Mercredi 11/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s4">S4</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Vendredi 13/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+          <tr><td><span class="session-badge badge-s5">S5</span></td><td><div class="session-detail"><span class="session-date"><i class="far fa-calendar"></i> Lundi 16/03</span><span class="session-time"><i class="far fa-clock"></i> 8h30–12h30</span><span class="session-room"><i class="fas fa-door-open"></i> Salle 2</span><span class="session-note ramadan">🌙 Matin Ramadan</span></div></td></tr>
+        </table>
+      </div>
+    </div> <!-- fin group-grid -->
+
+    <!-- FOOTER PREMIUM -->
+    <div class="elegant-footer">
+      <div class="footer-logo">
+        <div class="footer-icon"><i class="fas fa-graduation-cap"></i></div>
+        <div class="footer-text">
+          <h6>ENO Sébikotane</h6>
+          <p>Université Numérique Cheikh Hamidou Kane</p>
+        </div>
+      </div>
+      <div class="contact-flex">
+        <div class="contact-item"><i class="fas fa-envelope"></i> eno.sebikotane@unchk.edu.sn</div>
+        <div class="contact-item"><i class="fas fa-phone-alt"></i> 76 621 39 22</div>
+        <div class="contact-item"><i class="fas fa-map-marker-alt"></i> Sébikotane, Sénégal</div>
+      </div>
     </div>
-  </div>
-  
-  <div class="contact-info">
-    <div class="contact-item">
-      <i class="fas fa-envelope"></i>
-      <span><strong>Email :</strong> eno.sebikotane@unchk.edu.sn</span>
-    </div>
-    <div class="contact-item">
-      <i class="fas fa-phone"></i>
-      <span><strong>Tél :</strong> 76 621 39 22</span>
-    </div>
-    <div class="contact-item">
-      <i class="fas fa-phone"></i>
-      <span><strong>Tél :</strong> 76 621 09 12</span>
-    </div>
-    <div class="contact-item">
-      <i class="fas fa-map-marker-alt"></i>
-      <span><strong>Adresse :</strong> ENO de Sébikotane, Sénégal</span>
-    </div>
-  </div>
-  
-  <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee;">
-    <p><i class="fas fa-info-circle" style="color: var(--accent);"></i> 
-      <strong>Important :</strong> Apportez vos identifiants ENT à chaque séance.
+    <p style="text-align: center; margin-top: 20px; color: #4a6f8e; font-size: 14px; font-weight: 500; letter-spacing: 0.3px;">
+    
     </p>
-  </div>
-</div>
+  </div> <!-- fin container -->
 
-<script src="script.js"></script>
+  <script>
+    // Petite touche interactive : le bouton d'impression déjà présent
+    // Rien d'autre de nécessaire
+  </script>
 </body>
 </html>
+```
